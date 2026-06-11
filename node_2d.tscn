@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://dm1iteklpjx5r"]
+
+[ext_resource type="PackedScene" uid="uid://ca0jimo0gl07n" path="res://palyer.tscn" id="1_wtcfe"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0e48y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_epypp"]
+size = Vector2(466, 22)
+
+[node name="Node2D" type="Node2D" unique_id=106010612]
+
+[node name="CharacterBody2D" parent="." unique_id=1194648840 instance=ExtResource("1_wtcfe")]
+position = Vector2(1, 7)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=710517240]
+physics_material_override = SubResource("PhysicsMaterial_0e48y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1878293482]
+position = Vector2(49, 58)
+shape = SubResource("RectangleShape2D_epypp")
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D" unique_id=463180208]
+offset_left = -183.0
+offset_top = 46.0
+offset_right = 285.0
+offset_bottom = 70.0
