@@ -5,6 +5,7 @@ extends CharacterBody2D
 @export var jump_velocity: float = -360.0
 @export var wall_jump_push: float = 220.0
 @export var wall_jump_lock_time: float = 0.15
+@export var wall_jump_input_lock_time: float = 1.5
 @export var gravity: float = 900.0
 
 @export var dash_speed: float = 600.0
@@ -17,11 +18,16 @@ var is_dashing: bool = false
 var can_dash: bool = true
 var last_direction: float = 1.0
 var wall_jump_lock_timer: float = 0.0
+var wall_jump_input_lock_timer: float = 0.0
 var wall_jump_direction: float = 0.0
 
 
 func _physics_process(delta: float) -> void:
 	wall_jump_lock_timer = maxf(wall_jump_lock_timer - delta, 0.0)
+	wall_jump_input_lock_timer = maxf(wall_jump_input_lock_timer - delta, 0.0)
+	if wall_jump_direction != 0.0 and (wall_jump_input_lock_timer == 0.0 or velocity.y >= 0.0):
+		wall_jump_direction = 0.0
+
 	if is_on_floor():
 		wall_jump_direction = 0.0
 
@@ -56,12 +62,7 @@ func _physics_process(delta: float) -> void:
 		if is_on_floor() and not is_crouching:
 			velocity.y = jump_velocity
 		elif is_wall_clinging:
-			velocity.y = jump_velocity
-			velocity.x = wall_normal.x * wall_jump_push
-			wall_jump_lock_timer = wall_jump_lock_time
-			wall_jump_direction = sign(velocity.x)
-			last_direction = wall_jump_direction
-			did_wall_jump = true
+			did_wall_jump = wall_jump(wall_normal)
 
 	if is_wall_clinging and not did_wall_jump:
 		velocity = Vector2.ZERO
@@ -85,6 +86,16 @@ func start_dash() -> void:
 	can_dash = true
 
 
+func wall_jump(wall_normal: Vector2) -> bool:
+	velocity.y = jump_velocity
+	velocity.x = wall_normal.x * wall_jump_push
+	wall_jump_lock_timer = wall_jump_lock_time
+	wall_jump_input_lock_timer = wall_jump_input_lock_time
+	wall_jump_direction = sign(velocity.x)
+	last_direction = wall_jump_direction
+	return true
+
+
 func update_animations(direction: float) -> void:
 	if is_dashing and _has_animation("dash"):
 		animated_sprite.play("dash")
@@ -101,5 +112,5 @@ func update_animations(direction: float) -> void:
 		animated_sprite.play("idle")
 
 
-func _has_animation(name: StringName) -> bool:
-	return animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(name)
+func _has_animation(animation_name: StringName) -> bool:
+	return animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(animation_name)
