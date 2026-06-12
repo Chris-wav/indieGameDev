@@ -272,8 +272,7 @@ script = ExtResource("1_j6xru")
 texture_filter = 1
 position = Vector2(0, -1)
 sprite_frames = SubResource("SpriteFrames_pfhm7")
-animation = &"run"
-frame_progress = 0.48481727
+animation = &"crouch"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1751746824]
 position = Vector2(-4, 21)
