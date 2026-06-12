@@ -12,6 +12,12 @@ position = Vector2(184, 58)
 
 [node name="CharacterBody2D" parent="." unique_id=1194648840 instance=ExtResource("1_wtcfe")]
 position = Vector2(1, 7)
+speed = null
+jump_velocity = null
+gravity = null
+dash_speed = null
+dash_duration = null
+dash_cooldown = null
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=710517240]
 physics_material_override = SubResource("PhysicsMaterial_0e48y")

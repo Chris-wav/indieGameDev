@@ -7,8 +7,15 @@ extends CharacterBody2D
 @export var wall_jump_lock_time: float = 0.15
 @export var gravity: float = 900.0
 
+@export var dash_speed: float = 600.0
+@export var dash_duration: float = 0.15
+@export var dash_cooldown: float = 0.5
+
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
+var is_dashing: bool = false
+var can_dash: bool = true
+var last_direction: float = 1.0
 var wall_jump_lock_timer: float = 0.0
 var wall_jump_direction: float = 0.0
 
@@ -18,56 +25,81 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		wall_jump_direction = 0.0
 
+	var direction: float = Input.get_axis("move_left", "move_right")
+	if wall_jump_direction != 0.0 and not is_on_floor() and sign(direction) != wall_jump_direction:
+		direction = 0.0
+
+	if direction != 0.0:
+		animated_sprite.flip_h = direction < 0.0
+		last_direction = direction
+
+	if Input.is_action_just_pressed("dash") and can_dash:
+		start_dash()
+
+	if is_dashing:
+		velocity.x = sign(last_direction) * dash_speed
+		velocity.y = 0.0
+		move_and_slide()
+		update_animations(direction)
+		return
+
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	var direction: float = Input.get_axis("move_left", "move_right")
-	var is_crouching := Input.is_action_pressed("crouch") and is_on_floor()
+	var is_crouching: bool = Input.is_action_pressed("crouch") and is_on_floor()
 	var wall_normal: Vector2 = get_wall_normal() if is_on_wall() else Vector2.ZERO
 	var is_pressing_into_wall: bool = wall_normal.x != 0.0 and sign(direction) == sign(-wall_normal.x)
 	var is_wall_clinging: bool = is_on_wall() and not is_on_floor() and is_pressing_into_wall and wall_jump_lock_timer == 0.0
-	var can_wall_jump: bool = is_wall_clinging
-	var did_wall_jump := false
-
-	if wall_jump_direction != 0.0 and not is_on_floor() and sign(direction) != wall_jump_direction:
-		direction = 0.0
+	var did_wall_jump: bool = false
 
 	if Input.is_action_just_pressed("jump"):
 		if is_on_floor() and not is_crouching:
 			velocity.y = jump_velocity
-		elif can_wall_jump:
+		elif is_wall_clinging:
 			velocity.y = jump_velocity
 			velocity.x = wall_normal.x * wall_jump_push
 			wall_jump_lock_timer = wall_jump_lock_time
 			wall_jump_direction = sign(velocity.x)
+			last_direction = wall_jump_direction
 			did_wall_jump = true
 
-	var target_speed := crouch_speed if is_crouching else move_speed
 	if is_wall_clinging and not did_wall_jump:
 		velocity = Vector2.ZERO
 	elif is_crouching:
 		velocity.x = 0.0
-	elif wall_jump_lock_timer == 0.0 and (not can_wall_jump or direction != 0.0):
-		velocity.x = direction * target_speed
-
-	if direction != 0.0:
-		animated_sprite.flip_h = direction < 0.0
+	elif wall_jump_lock_timer == 0.0:
+		velocity.x = direction * move_speed
 
 	move_and_slide()
-	_update_animation(direction, is_crouching)
+	update_animations(direction)
 
 
-func _update_animation(direction: float, is_crouching: bool) -> void:
-	if not is_on_floor():
-		animated_sprite.play("jump")
-		return
+func start_dash() -> void:
+	is_dashing = true
+	can_dash = false
 
-	if is_crouching:
+	await get_tree().create_timer(dash_duration).timeout
+	is_dashing = false
+
+	await get_tree().create_timer(dash_cooldown).timeout
+	can_dash = true
+
+
+func update_animations(direction: float) -> void:
+	if is_dashing and _has_animation("dash"):
+		animated_sprite.play("dash")
+	elif not is_on_floor():
+		if velocity.y > 0.0 and _has_animation("fall"):
+			animated_sprite.play("fall")
+		else:
+			animated_sprite.play("jump")
+	elif Input.is_action_pressed("crouch"):
 		animated_sprite.play("crouch")
-		return
-
-	if direction != 0.0:
+	elif direction != 0.0:
 		animated_sprite.play("run")
-		return
+	else:
+		animated_sprite.play("idle")
 
-	animated_sprite.play("idle")
+
+func _has_animation(name: StringName) -> bool:
+	return animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(name)
