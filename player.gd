@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+@export var spawn_position: Vector2
 @export var move_speed: float = 220.0
 @export var crouch_speed: float = 90.0
 @export var jump_velocity: float = -360.0
@@ -11,6 +12,8 @@ extends CharacterBody2D
 @export var dash_speed: float = 600.0
 @export var dash_duration: float = 0.15
 @export var dash_cooldown: float = 0.5
+@export var death_delay: float = 2.0
+@export var death_y: float = 1000.0
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -20,9 +23,16 @@ var last_direction: float = 1.0
 var wall_jump_lock_timer: float = 0.0
 var wall_jump_input_lock_timer: float = 0.0
 var wall_jump_direction: float = 0.0
+var fall_death_timer: float = 0.0
+
+
+func _ready() -> void:
+	spawn_position = global_position
 
 
 func _physics_process(delta: float) -> void:
+	_death(delta)
+
 	wall_jump_lock_timer = maxf(wall_jump_lock_timer - delta, 0.0)
 	wall_jump_input_lock_timer = maxf(wall_jump_input_lock_timer - delta, 0.0)
 	if wall_jump_direction != 0.0 and (wall_jump_input_lock_timer == 0.0 or velocity.y >= 0.0):
@@ -114,3 +124,23 @@ func update_animations(direction: float) -> void:
 
 func _has_animation(animation_name: StringName) -> bool:
 	return animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(animation_name)
+
+
+func _death(delta: float) -> void:
+	if global_position.y > death_y:
+		fall_death_timer += delta
+		if fall_death_timer >= death_delay:
+			respawn()
+	else:
+		fall_death_timer = 0.0
+
+
+func respawn() -> void:
+	global_position = spawn_position
+	velocity = Vector2.ZERO
+	fall_death_timer = 0.0
+	is_dashing = false
+	can_dash = true
+	wall_jump_lock_timer = 0.0
+	wall_jump_input_lock_timer = 0.0
+	wall_jump_direction = 0.0

@@ -5,7 +5,10 @@
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0e48y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_epypp"]
-size = Vector2(466, 22)
+size = Vector2(466.99997, 24.35778)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wtcfe"]
+size = Vector2(355, 34)
 
 [node name="Node2D" type="Node2D" unique_id=106010612]
 position = Vector2(184, 58)
@@ -17,27 +20,40 @@ position = Vector2(1, 6)
 physics_material_override = SubResource("PhysicsMaterial_0e48y")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1878293482]
-position = Vector2(52, 95)
+position = Vector2(117.748535, 235.27075)
 shape = SubResource("RectangleShape2D_epypp")
 
 [node name="ColorRect" type="ColorRect" parent="Floor" unique_id=463180208]
-offset_left = -183.0
-offset_top = 82.0
-offset_right = 285.0
-offset_bottom = 106.0
+offset_left = -173.0
+offset_top = 222.0
+offset_right = 409.0
+offset_bottom = 249.0
 
 [node name="Wall" type="StaticBody2D" parent="." unique_id=1645202623]
 position = Vector2(-1, 1)
 physics_material_override = SubResource("PhysicsMaterial_0e48y")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wall" unique_id=585765340]
-position = Vector2(299, -127)
+position = Vector2(500.09857, 21.504173)
 rotation = -1.5704522
 shape = SubResource("RectangleShape2D_epypp")
 
 [node name="ColorRect" type="ColorRect" parent="Wall" unique_id=71336310]
-offset_left = 286.0
-offset_top = 105.99997
-offset_right = 754.0
-offset_bottom = 129.99997
+offset_left = 487.99997
+offset_top = 256.0
+offset_right = 956.0
+offset_bottom = 280.0
 rotation = -1.5704522
+
+[node name="Wall2" type="StaticBody2D" parent="." unique_id=796428631]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall2" unique_id=936803179]
+position = Vector2(396, -18)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_wtcfe")
+
+[node name="ColorRect" type="ColorRect" parent="Wall2" unique_id=1515199434]
+offset_left = 377.0
+offset_top = -203.0
+offset_right = 417.0
+offset_bottom = 163.0

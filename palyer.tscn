@@ -267,6 +267,7 @@ height = 38.0
 
 [node name="player" type="CharacterBody2D" unique_id=1194648840]
 script = ExtResource("1_j6xru")
+death_y = 250.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=579292198]
 texture_filter = 1
