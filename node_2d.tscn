@@ -5,22 +5,20 @@
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0e48y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_epypp"]
-size = Vector2(466, 22)
+size = Vector2(466.99997, 24.35778)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wtcfe"]
+size = Vector2(355, 34)
 
 [node name="Node2D" type="Node2D" unique_id=106010612]
 
 [node name="CharacterBody2D" parent="." unique_id=1194648840 instance=ExtResource("1_wtcfe")]
 position = Vector2(1, 7)
-speed = null
-jump_velocity = null
-gravity = null
-dash_speed = null
-dash_duration = null
-dash_cooldown = null
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=710517240]
 physics_material_override = SubResource("PhysicsMaterial_0e48y")
 
+<<<<<<< Updated upstream
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1878293482]
 position = Vector2(36, 245)
 shape = SubResource("RectangleShape2D_epypp")
@@ -30,3 +28,43 @@ offset_left = -198.0
 offset_top = 233.0
 offset_right = 270.0
 offset_bottom = 257.0
+=======
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1878293482]
+position = Vector2(117.748535, 235.27075)
+shape = SubResource("RectangleShape2D_epypp")
+
+[node name="ColorRect" type="ColorRect" parent="Floor" unique_id=463180208]
+offset_left = -173.0
+offset_top = 222.0
+offset_right = 409.0
+offset_bottom = 249.0
+
+[node name="Wall" type="StaticBody2D" parent="." unique_id=1645202623]
+position = Vector2(-1, 1)
+physics_material_override = SubResource("PhysicsMaterial_0e48y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall" unique_id=585765340]
+position = Vector2(500.09857, 21.504173)
+rotation = -1.5704522
+shape = SubResource("RectangleShape2D_epypp")
+
+[node name="ColorRect" type="ColorRect" parent="Wall" unique_id=71336310]
+offset_left = 487.99997
+offset_top = 256.0
+offset_right = 956.0
+offset_bottom = 280.0
+rotation = -1.5704522
+
+[node name="Wall2" type="StaticBody2D" parent="." unique_id=796428631]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall2" unique_id=936803179]
+position = Vector2(396, -18)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_wtcfe")
+
+[node name="ColorRect" type="ColorRect" parent="Wall2" unique_id=1515199434]
+offset_left = 377.0
+offset_top = -203.0
+offset_right = 417.0
+offset_bottom = 163.0
+>>>>>>> Stashed changes
