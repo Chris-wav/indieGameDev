@@ -16,6 +16,8 @@ extends CharacterBody2D
 @export var dash_cooldown: float = 0.5
 @export var death_delay: float = 2.0
 @export var death_y: float = 1000.0
+@export var attack_cooldown = 0.5;
+
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
