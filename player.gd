@@ -8,6 +8,8 @@ extends CharacterBody2D
 @export var wall_jump_lock_time: float = 0.15
 @export var wall_jump_input_lock_time: float = 1.5
 @export var gravity: float = 900.0
+@export var max_health: float = 100;
+
 
 @export var dash_speed: float = 600.0
 @export var dash_duration: float = 0.15
@@ -24,10 +26,15 @@ var wall_jump_lock_timer: float = 0.0
 var wall_jump_input_lock_timer: float = 0.0
 var wall_jump_direction: float = 0.0
 var fall_death_timer: float = 0.0
+var current_health: float = 100;
 
+@onready var hp_bar: ProgressBar = $"../UI/HpBar"
 
 func _ready() -> void:
 	spawn_position = global_position
+	current_health = max_health
+	hp_bar.value = current_health
+	hp_bar.max_value = max_health
 
 
 func _physics_process(delta: float) -> void:
@@ -144,3 +151,9 @@ func respawn() -> void:
 	wall_jump_lock_timer = 0.0
 	wall_jump_input_lock_timer = 0.0
 	wall_jump_direction = 0.0
+
+func _damage(amount: float) -> void:
+	current_health -= amount
+	current_health = max(current_health, 0)
+
+	hp_bar.value = current_health
