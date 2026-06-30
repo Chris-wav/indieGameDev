@@ -64,8 +64,7 @@ func _physics_process(delta: float) -> void:
 
 	var is_crouching: bool = Input.is_action_pressed("crouch") and is_on_floor()
 	var wall_normal: Vector2 = get_wall_normal() if is_on_wall() else Vector2.ZERO
-	var is_pressing_into_wall: bool = wall_normal.x != 0.0 and sign(direction) == sign(-wall_normal.x)
-	var is_wall_clinging: bool = is_on_wall() and not is_on_floor() and is_pressing_into_wall and wall_jump_lock_timer == 0.0
+	var is_wall_clinging: bool = wall_normal.x != 0.0 and not is_on_floor() and wall_jump_lock_timer == 0.0
 	var did_wall_jump: bool = false
 
 	if Input.is_action_just_pressed("jump"):
