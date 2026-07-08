@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ca0jimo0gl07n"]
 
 [ext_resource type="Texture2D" uid="uid://c18ykcqjwslj4" path="res://assets/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Attack.png" id="1_a36yo"]
-[ext_resource type="Script" uid="uid://cjeomhc8dcsw1" path="res://player.gd" id="1_j6xru"]
+[ext_resource type="Script" uid="uid://dod4alg8mha05" path="res://player.gd" id="1_j6xru"]
 [ext_resource type="Texture2D" uid="uid://c5d76j8tw3g3i" path="res://assets/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_AttackNoMovement.png" id="2_j6xru"]
 [ext_resource type="Texture2D" uid="uid://duksajimmj02i" path="res://assets/FreeKnight_v1/Colour1/NoOutline/120x80_PNGSheets/_Crouch.png" id="3_a0ouk"]
 [ext_resource type="Texture2D" uid="uid://brlocd733w7oh" path="res://assets/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Idle.png" id="4_l7cla"]

@@ -14,6 +14,10 @@ config/name="indieGameDev"
 run/main_scene="uid://dm1iteklpjx5r"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot-neovim/plugin.cfg")
+
 [input]
 
 jump={

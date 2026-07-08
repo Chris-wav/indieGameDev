@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://ca0jimo0gl07n" path="res://palyer.tscn" id="1_wtcfe"]
 [ext_resource type="Texture2D" uid="uid://dsoafulmo6uxw" path="res://assets/FreeKnight_v1/Colour2/Outline/120x80_PNGSheets/_Idle.png" id="2_0e48y"]
 [ext_resource type="Script" uid="uid://h602ce36lp5o" path="res://enemy.gd" id="3_enemy"]
+[ext_resource type="Texture2D" uid="uid://bwbg3axjd8r0q" path="res://assets/FreeKnight_v1/Colour2/Outline/120x80_PNGSheets/_Attack2NoMovement.png" id="3_q6r6c"]
 [ext_resource type="Texture2D" uid="uid://8po5oq0evtb" path="res://assets/FreeKnight_v1/Colour2/Outline/120x80_PNGSheets/_Run.png" id="4_0hol4"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0e48y"]
@@ -12,6 +13,30 @@ size = Vector2(581, 25.449646)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wtcfe"]
 size = Vector2(355, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e8dv2"]
+atlas = ExtResource("3_q6r6c")
+region = Rect2(0, 0, 120, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2nhjh"]
+atlas = ExtResource("3_q6r6c")
+region = Rect2(120, 0, 120, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bjha6"]
+atlas = ExtResource("3_q6r6c")
+region = Rect2(240, 0, 120, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gt76g"]
+atlas = ExtResource("3_q6r6c")
+region = Rect2(360, 0, 120, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1fr6y"]
+atlas = ExtResource("3_q6r6c")
+region = Rect2(480, 0, 120, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hxjc"]
+atlas = ExtResource("3_q6r6c")
+region = Rect2(600, 0, 120, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_epypp"]
 atlas = ExtResource("2_0e48y")
@@ -97,6 +122,29 @@ region = Rect2(1080, 0, 120, 80)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_e8dv2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2nhjh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bjha6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gt76g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1fr6y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hxjc")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_epypp")
 }, {
 "duration": 1.0,
@@ -163,7 +211,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"move",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0h7mo"]
@@ -172,24 +220,15 @@ height = 40.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_nr8wp"]
 radius = 21.095022
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q6r6c"]
+size = Vector2(200, 30)
+
 [node name="Node2D" type="Node2D" unique_id=106010612]
 position = Vector2(184, 58)
 
-[node name="CharacterBody2D" parent="." unique_id=1194648840 instance=ExtResource("1_wtcfe")]
+[node name="Player" parent="." unique_id=1194648840 instance=ExtResource("1_wtcfe")]
 position = Vector2(1, 181)
-spawn_position = null
-move_speed = null
-crouch_speed = null
-jump_velocity = null
-wall_jump_push = null
-wall_jump_lock_time = null
-wall_jump_input_lock_time = null
-gravity = null
-max_health = null
-dash_speed = null
-dash_duration = null
-dash_cooldown = null
-death_delay = null
+collision_layer = 2
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=710517240]
 physics_material_override = SubResource("PhysicsMaterial_0e48y")
@@ -243,12 +282,15 @@ offset_bottom = 43.0
 value = 100.0
 
 [node name="Enemy" type="CharacterBody2D" parent="." unique_id=752706620]
+collision_layer = 4
 script = ExtResource("3_enemy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Enemy" unique_id=1471581708]
 position = Vector2(214, 176)
 sprite_frames = SubResource("SpriteFrames_wtcfe")
-animation = &"move"
+animation = &"attack"
+frame = 5
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy" unique_id=568482353]
 position = Vector2(209, 198)
@@ -260,7 +302,20 @@ target_position = Vector2(-20, 40)
 
 [node name="DamageArea" type="Area2D" parent="Enemy" unique_id=1838936751]
 position = Vector2(210, 192)
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/DamageArea" unique_id=1116670839]
 position = Vector2(0, 7)
 shape = SubResource("CircleShape2D_nr8wp")
+
+[node name="Area2D" type="Area2D" parent="Enemy" unique_id=1952179122]
+position = Vector2(209, 208)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/Area2D" unique_id=140995653]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_q6r6c")
+debug_color = Color(0.8307688, 0.1489915, 0.8797033, 0.41960785)
+
+[connection signal="body_entered" from="Enemy/Area2D" to="Enemy" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Enemy/Area2D" to="Enemy" method="_on_area_2d_body_exited"]
